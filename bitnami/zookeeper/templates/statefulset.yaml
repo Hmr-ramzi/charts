@@ -26,6 +26,9 @@ spec:
         app.kubernetes.io/component: zookeeper
     spec:
       {{- include "zookeeper.imagePullSecrets" . | nindent 6 }}
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ .Values.serviceAccount.name | default (include "zookeeper.fullname" .) }}
+      {{- end }}
       {{- if .Values.securityContext.enabled }}
       securityContext:
         fsGroup: {{ .Values.securityContext.fsGroup }}
